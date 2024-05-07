@@ -1,0 +1,9 @@
+<mat-chip-list #chipList [required]="required" [disabled]="disabled">
+  <mat-chip *ngFor="let val of value" [selectable]="true" [removable]="true" (removed)="remove(val)">
+    {{ val.length > maxValueLength ? val.substr(0, maxValueLength - 1) + '&hellip;' : val }}
+    <mat-icon matChipRemove>clear</mat-icon>
+  </mat-chip>
+  <input [(ngModel)]="emailInputValue" #emailInputControl="ngModel" [placeholder]="placeholder"
+    [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+    (blur)="handleOnTouched()" (matChipInputTokenEnd)="add($event)" [email]="true">
+</mat-chip-list>

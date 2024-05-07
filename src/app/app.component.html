@@ -1,0 +1,44 @@
+<p>Angular version: {{ version }}</p>
+<p>
+  TASK: have a <i>mat-chip-list</i> input, which is a <b>REUSABLE</b> custom <i>mat-form-field</i>. You can type
+  anything in the input, but only valid email addresses can be added to the chip list. If the input has an invalid email
+  in it and user presses <i>ENTER</i>, <i>COMMA</i> or <i>TAB</i>, then the input value cannot be added to the list and
+  the mat-form-field should have an error.
+</p>
+
+<hr />
+
+<p>Reusable input</p>
+<p>I invoke an error in the mat-form-field from the custom input (which is not nice, but I
+  couldn't find a better solution) + mat-form-filed have special validators:</p>
+
+<mat-form-field>
+  <app-chip-list-email-input [formControl]="emailFormControl" placeholder="Add emails here" required>
+  </app-chip-list-email-input>
+  <mat-error>
+    {{ emailFormControl.errors | json }}
+  </mat-error>
+</mat-form-field>
+
+<hr />
+
+<p>
+  Already working example, but it's NOT reusable :(
+</p>
+
+<form [formGroup]="oldForm">
+  <mat-form-field class="w-100">
+    <mat-chip-list required #chipList formControlName="email">
+      <mat-chip *ngFor="let email of oldForm.get('email').value" (removed)="removeEmailAddress(email)">
+        {{ email }}
+        <mat-icon matChipRemove>clear</mat-icon>
+      </mat-chip>
+      <input formControlName="emailHelper" placeholder="Add emails here"
+              [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="addEmailAddress($event)">
+    </mat-chip-list>
+    <mat-error>
+      {{ oldForm.get('email').errors | json }}
+    </mat-error>
+  </mat-form-field>
+</form>
